@@ -5,7 +5,7 @@ importFrom(
 )
 
 importFrom(
-    RCurl, getCurlHandle, getURLContent, postForm, curlPerform, CFILE, close
+    RCurl, getCurlHandle, getURLContent, postForm, curlPerform, CFILE, close, basicTextGatherer
 )
 
 importFrom(
@@ -16,12 +16,19 @@ importFrom(
     utils, URLencode
 )
 
+importFrom(
+    jsonlite, fromJSON, toJSON
+)
+
 export(
     "flowRep.ls", "flowRep.get", "flowRep.search",
+    "flowRep.submitImpcResults",
+    "flowRep.submitGeneStatus",
     "getFlowRepositoryURL", 
     "setFlowRepositoryURL", "setFlowRepositoryCredentials",
     "forgetFlowRepositoryCredentials",
-    "fcs.files<-", "attachments<-"
+    "fcs.files<-", "attachments<-",
+    "impcCodeDescription", "ilarCodeDescription", "listKnownIlarCodes"
 )
 
 export(
@@ -34,6 +41,7 @@ exportClasses(
 
 exportMethods(
     "summary", "is.downloaded", "download", "id", "fcs.files", "attachments",
-    "fcs.files<-", "attachments<-", "localpath", "organizations"
+    "fcs.files<-", "attachments<-", "localpath", "organizations",
+    "impcResultsCopy", "impc.experiments", "impc.experiments<-"
 )
 

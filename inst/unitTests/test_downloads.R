@@ -25,4 +25,67 @@ test_downloads <- function() {
     ## afterwards.
     myDataset <- download(myDataset)
     checkTrue(is.downloaded(myDataset))
+    
+    checkTrue(id(myDataset) == "FR-FCM-ZZJ7")
+    checkTrue(length(fcs.files(myDataset)) >=2)
+    checkTrue(length(attachments(myDataset)) >= 2)
+    checkTrue(length(impc.experiments(myDataset)) == 0)
+    checkTrue(nchar(localpath(attachments(myDataset)[[1]])) > 5)
+    checkTrue(nchar(localpath(fcs.files(myDataset)[[1]])) > 5)
+    checkTrue(length(organizations(myDataset)) >= 1)
+    
+    checkTrue(FlowRepositoryR:::verify.integrity(fcs.files(myDataset)[[1]]))
+    
+    tmpfile <- tempfile(pattern="FRRUnitTst", tmpdir=tempdir(), fileext=".tmp")
+    sink(tmpfile)
+    summary(myDataset)
+    sink()
+    checkTrue(
+        grepl('flowRepData', readChar(tmpfile, file.info(tmpfile)$size), 
+            fixed=TRUE)
+    )
+    file.remove(tmpfile)
+
+    tmpfile <- tempfile(pattern="FRRUnitTst", tmpdir=tempdir(), fileext=".tmp")
+    sink(tmpfile)
+    summary(fcs.files(myDataset)[[2]])
+    sink()
+    checkTrue(
+        grepl('fileProxy', readChar(tmpfile, file.info(tmpfile)$size),
+            fixed=TRUE)
+    )
+    file.remove(tmpfile)
+    
+    tmpfile <- tempfile(pattern="FRRUnitTst", tmpdir=tempdir(), fileext=".tmp")
+    sink(tmpfile)
+    summary(organizations(myDataset)[[1]])
+    sink()
+    checkTrue(
+        grepl('BC Cancer Agency', readChar(tmpfile, file.info(tmpfile)$size),
+            fixed=TRUE)
+    )
+    file.remove(tmpfile)
+    
+    myError <- tryCatch({fcs.files(myDataset) <- "foo"}, 
+        error = function(x) paste0(x))
+    checkTrue(myError == "Error: fcs.files shall be a list\n")
+    
+    fcs.files(myDataset) <- c(fcs.files(myDataset), fcs.files(myDataset))
+    checkTrue(length(fcs.files(myDataset)) == 4)
+
+    myError <- tryCatch({attachments(myDataset) <- "foo"}, 
+        error = function(x) paste0(x))
+    checkTrue(myError == "Error: attachments shall be a list\n")
+    
+    attachments(myDataset) <- c(attachments(myDataset), attachments(myDataset))
+    checkTrue(length(attachments(myDataset)) == 4)
+    
+    myError <- tryCatch({impc.experiments(myDataset) <- "foo"}, 
+        error = function(x) paste0(x))
+    checkTrue(myError == "Error: impc.experiments shall be a list\n")
+    
+    impc.experiments(myDataset) <- c(impc.experiments(myDataset), 
+                                     impc.experiments(myDataset))
+    checkTrue(length(impc.experiments(myDataset)) == 0)
+    
 }
