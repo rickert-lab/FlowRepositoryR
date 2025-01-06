@@ -10,7 +10,7 @@ Description: This package provides an interface to search and download
         data and annotations from FlowRepository (flowrepository.org).
         It uses the FlowRepository programming interface to communicate
         with a FlowRepository server.
-Depends: R (>= 3.2)
+Depends: R (>= 3.5.0)
 Imports: XML, RCurl, tools, utils, jsonlite
 Suggests: RUnit, BiocGenerics, flowCore, methods
 Collate: AllClasses.R settings.R helper-functions.R parsing-methods.R
